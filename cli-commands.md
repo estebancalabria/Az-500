@@ -2,11 +2,6 @@
 
 > New-AzResourceGroup -Name Az500-Clase2 -Location eastus
 
-## Key Vault
-
-New-AzKeyVault -VaultName Az500-Clase2-KeyVault -ResourceGroupName Az500-Clase2 -Location eastus
-
-Set-AzKeyVaultAccessPolicy -VaultName 'Az500-Clase2-KeyVault' -ResourceGroupName 'Az500-Clase2' -ServicePrincipalName '53741083-4c43-4bdd-86d1-e98e350ebe7d'  -PermissionsToKeys get,wrapKey,unwrapKey,sign,verify,list
 
 ## Microsoft Entra (Ex Azure Active Directory)
 
@@ -14,10 +9,15 @@ Para Poder Usar Active Directory en PowerShell
 > Connect-AzureAD
 
 ### Obtener Detalles del TEanant
-> Get-AzureADTenantDetail 
+> Get-AzureADTenantDetail
+Obtener el domain del tennant
+> (Get-AzureADTenantDetail).VerifiedDomains[0].Name
 
-### Listar Usuarios Active Directory (Powershell)
+### Listar Usuarios Active Directory
+#### Powershell
 > Get-AzureADUser
+#### Bash
+> az ad user list
 
 ### Crear un usuario nuevo (Powershell)
 > $pass = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
@@ -52,7 +52,14 @@ $ az ad user create --display-name Tracy --password Pa55w.rd --user-principal-na
 	Crear Storage Account
 > New-AzStorageAccount -ResourceGroupName Az500-Clase4 -Name demo-storage-1 -Location eastus -Kind StorageV2
 
-Locks
+## Key Vault
+
+> New-AzKeyVault -VaultName Az500-Clase2-KeyVault -ResourceGroupName Az500-Clase2 -Location eastus
+
+> Set-AzKeyVaultAccessPolicy -VaultName 'Az500-Clase2-KeyVault' -ResourceGroupName 'Az500-Clase2' -ServicePrincipalName '53741083-4c43-4bdd-86d1-e98e350ebe7d'  -PermissionsToKeys get,wrapKey,unwrapKey,sign,verify,list
+
+
+## Locks
 
 Crear un Lock en un Recurso
 > New-AzResourceLock -LockLevel CanNotDelete -LockName NoBorrar -ResourceGroupName Az500-Clase4 -ResourceType Microsoft.Storage/storageAccounts -ResourceName eccdemostorage2
