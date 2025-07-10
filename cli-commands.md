@@ -1,6 +1,13 @@
 ## Resource Group
 
-> New-AzResourceGroup -Name Az500-Clase2 -Location eastus
+** Powershell **
+```powershell
+New-AzResourceGroup -Name Az500-Clase2 -Location eastus
+```
+**Az**
+```
+az group create --name Az500-Clase2 --location eastus
+```
 
 
 ## Microsoft Entra (Ex Azure Active Directory)
