@@ -1,10 +1,10 @@
 ## Resource Group
 
-** Powershell **
+**Powershell**
 ```powershell
 New-AzResourceGroup -Name Az500-Clase2 -Location eastus
 ```
-**Az**
+**zz**
 ```
 az group create --name Az500-Clase2 --location eastus
 ```
