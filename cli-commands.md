@@ -7,6 +7,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole -All
 ```
+**Deshabilitar Firewall de Windows 11**
+```powershell
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
 
 ## Resource Group
 
