@@ -23,3 +23,7 @@ Uso del Firewall con una sola VM
     * Agregar una Network Rule para permitir el trafico al RDP 3389
 11. Conectar a la Virtual
     * Vemos que no se puede navegar desde internet
+12 Agregar regla Application Rule para que pueda Navegar por Internet
+    * Ahora puede navegar por Internet
+13 Agregar regla Application Rule para excluir alguna pagina
+    * Ahora no se puede navegar por la pagina excluida
