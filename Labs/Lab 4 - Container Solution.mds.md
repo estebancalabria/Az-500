@@ -66,4 +66,5 @@ CMD ["node", "server.js"]
 4. Subir el programa al acr
 
 >  az acr login --name adr4trainner --expose-token
+> az acr build --registry adr4trainner  --image webapp:latest .   
 
