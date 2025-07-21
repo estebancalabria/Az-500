@@ -34,6 +34,11 @@ app.listen(80, () => {
 });
 ```
 
+3. Instalar paquete express
+
+> npm init -y
+> npm install express
+
 3. Crear el archivo Dockerfile en la consola con este contenido
 
 ```dockerfile
@@ -58,4 +63,7 @@ CMD ["node", "server.js"]
 
 ```
 
+4. Subir el programa al acr
+
+>  az acr login --name adr4trainner --expose-token
 
