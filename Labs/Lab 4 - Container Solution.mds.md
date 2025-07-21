@@ -65,6 +65,26 @@ CMD ["node", "server.js"]
 
 4. Subir el programa al acr
 
->  az acr login --name adr4trainner --expose-token   
-> az acr build --registry adr4trainner  --image webapp:latest .   
+Hacer Login en el ACR
+```bash
+  az acr login --name adr4trainner --expose-token
+```
 
+Subir la app al acr
+```bash
+  az acr build --registry adr4trainner  --image webapp:latest .   
+  (En el comando anterior no olvidar el . final)
+```
+
+5. En el ACR agregarle un admin Username
+
+> Anotar <USERNAME> <PASSWORD>
+
+7. Crear un container instance con la imagen del ACR
+
+```bash
+az container create --resource-group rg-az500-clase-05 --name aci-webapp --image adr4trainner.azurecr.io/webapp:latest  --ports 80 --ip-address Public --os-type Linux --cpu 1 --memory 2 --registry-username <USERNAME> --registry-password <PASSWORD>
+```
+   
+
+> 
