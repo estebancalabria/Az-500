@@ -111,6 +111,5 @@ Subir la imagen al ACR
 ```bash
  az acr build --registry adr4trainner  --image new-nginx:latest .    
 ```
-   
+ 
 2. 
-3. 
