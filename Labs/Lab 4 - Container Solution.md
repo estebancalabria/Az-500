@@ -7,11 +7,11 @@
 
 ## Probar los Container Instances
 
-2. Crear Contaienr Instance
+1. Crear Contaienr Instance
 
 > Utilizar Imagen : mcr.microsoft.com/azuredocs/aci-helloworld
 
-3 Verificar el deployment
+2 Verificar el deployment
 
 > En la parte de Overview copiar la direccion ip en una nueva solapar del navegador
 
@@ -85,6 +85,32 @@ Subir la app al acr
 ```bash
 az container create --resource-group rg-az500-clase-05 --name aci-webapp --image adr4trainner.azurecr.io/webapp:latest  --ports 80 --ip-address Public --os-type Linux --cpu 1 --memory 2 --registry-username <USERNAME> --registry-password <PASSWORD>
 ```
-   
 
-> 
+8. Probar la imagen desplegada
+
+> copiar la ip publica del contenedor y en una nueva solapa poner http://<IP_PUBLICA_SERVIDOR>
+
+## Probar Container Apps
+
+1. Crear el container App Enviroment
+
+2. Crear el container App
+> Utilizar la imagen que subimos al ACR antes  
+> Configurar bien el Ingress  
+> En la parte de Ingress asegurarte que sea public "allow traffic from anywhere" y que la url no diga .internal
+
+## Probar Kubernetes
+
+1. Subir una imagen al acr
+
+En una carpeta crear el archivo Dobkerfile
+```bash
+ echo FROM nginx > Dockerfile
+```
+Subir la imagen al ACR
+```bash
+ az acr build --registry adr4trainner  --image new-nginx:latest .    
+```
+   
+2. 
+3. 
