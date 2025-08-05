@@ -57,7 +57,28 @@ Perf
           * Crear un DCR nuevo para que utilice el log analitics worspace que creamos y no el default
 
 13.  En la solapa performance dale "Install Performance Diagnostics"
-14.  
 
-15.  
+14.  Ver la solapa de MAp en la parte de Insights de La Opcion de la VM
+
+15.  Ver tablas nuevas que aparecen:
+          * VMProcess
+          * VMComputer
+          * VMBoundPort
+          * VMConnection
+
+16.  Ver en la parte "Queries Hub" alguna query ya predefinida
+
+17.  Chequear tambien la consulta (ya que paso tiempo)
+
+```kql
+AzureActivity | where ResourceGroup contains "RG-AZ500-CLASE-07"
+```
+
+18.  Hacer una consulta al log analitics worspace con el CLI
+
+```bash
+az monitor log-analytics query --workspace <id-del-worspace> --analytics-query "Heartbeat" --output table
+```
+
+19.  
 
