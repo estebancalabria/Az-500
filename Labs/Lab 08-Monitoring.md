@@ -32,5 +32,32 @@ New-AzResourceGroup -Name rg-az500-clase-07 -Location westus
 7.  Conectarnos a la VM y chequear que este todo ok
 
 8.  Verificar en el Storage Account y en el Log Analitics Workspace si hay informacion
+     * Tiene que haber un json en el Stroage Account
+     * Tiene que haber registros en la tabla AzureActivity
+     * Ojo que no aparece todo, hay que esperar y a medida que pasa el tiempo aparecen mas cosas
 
+9.  Crear un Data Collection Rules para que saque informacion de la VM y la guarde en el Log Analitics Worskpace
+
+10.  Liego consultar las tablas:
+      * Heartbeat
+      * Event
+
+11.  Ejemplo de consulta
+
+```kql
+Perf
+| where ObjectName == "Memory"
+| where CounterName in ("Available MBytes", "% Committed Bytes In Use")
+| summarize avg(CounterValue) by CounterName, bin(TimeGenerated, 5m)
+| render timechart
+
+```
+
+12.  Habilitar los Insights de la VM para que de mas informacion en la parte de Monitoring/Insights de tu VM
+          * Crear un DCR nuevo para que utilice el log analitics worspace que creamos y no el default
+
+13.  En la solapa performance dale "Install Performance Diagnostics"
+14.  
+
+15.  
 
