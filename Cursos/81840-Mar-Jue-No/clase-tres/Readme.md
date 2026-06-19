@@ -99,3 +99,19 @@
    * Prtocol : http:80, https:443
  
 * Si verificamos ya podemos navegar por internet
+
+## VNET peering
+
+* Crear un Resource Group
+* Crear dos Virtual Network
+   * vnet-uno (10.0.0.0 / 24)
+   * vnet-dos (10.1.0.0 / 24)
+* Crear una maquina virtual en cada vnet
+   * vm-uno (10.0.0.4)
+   * vm-dos (10.1.0.4)
+* Conectarse a la primera
+* Tratar de hacer un RDP a la segunda
+      * DENEGADO
+* Vamos a establecer VNET peering entre las dos subnets
+* Vamos a hacer un ping de una maquina a la otra
+     * APROBADO
