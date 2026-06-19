@@ -29,6 +29,8 @@
 
 ## Firewall
 
+### Setup del Laboratorio
+
 * Crear un resource group
    * rg-az500-clase-tres
 * Crear una VNet
@@ -46,3 +48,54 @@
    * vm-az500-clase-tres
    * IMPORTANTE: Asociar a la vm a la subnet default y al nsg recien creado (nsg-az500-clase-tres)
 * Conectarnos a la VM por RDP
+   * Verificar que la pc tenga salida a internet
+
+### Creacion del FW
+
+* Crear dos IP publicas
+   * Firewall
+      * pip-fw-main
+   * Management del Firewall
+      * pip-fw-mgmt
+* Crear el firewall
+   * fw-az500-clase-tres
+   * SKU : Standard
+   * Crear una policy nueva para el fw
+      * fw-policy-az500-clase-tres
+    * Asociar el firewall con
+       * vnet : vnet-az500-clase-tres
+       * ip del Firewall : pip-fw-main
+       * IP para management : pip-fw-mgmt
+
+> [!NOTE]
+> Esperar que la creacion del Firewall lo cree
+
+* Firewall
+   * Anotar IP Privada (10.0.2.4)
+* Crear una tabla de Ruteo
+   *  rt-az500-clase-tres
+   *  Propagate Gateway Rules : Disabled
+      *  Agregar la ruta
+         *  route-to-fw
+            *  Adress prefix : 0.0.0.0/0 (todas)
+            *  Next Hop Type : Virtual Appliance
+            *  Next HOP : 10.0.2.4
+      *  Asociar la ruta con la subnet de la VM (default)
+
+* Configurar las reglas de firewall para permitir conectarse a la VM
+   * Redirigir el trafico del fw en 3389 a la Virtual  (DNAT)
+   * Permitir el trafico RDP interneto en la red (Network Rule)
+
+* Desasociar la IP publica de la maquina virtual
+   * Desasocio la IP publica de la NIC de la VM
+   * Elimino la IP Publica
+ 
+* Conectarnos a la VM mediante la IP publica de Firewall
+   * Verificar que no podemos navegar porque el FW bloquea todo el trafico
+ 
+* Agregar la regla de Applicacion
+   * Source : 10.0.0.0/24 (Subnet)
+   * Destination *
+   * Prtocol : http:80, https:443
+ 
+* Si verificamos ya podemos navegar por internet
