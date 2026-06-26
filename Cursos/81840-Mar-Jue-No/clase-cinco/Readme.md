@@ -34,6 +34,35 @@
     * No relacionales : CosmoDB
     * Cache for Redis
 
+----
+
+# Recursos de Azure que todo especialista de Seguridad Debe Conocer
+
+## Global para todos
+
+* Todos los recursos tienen un activity log (abajo de overview) donde se ve un log de ese recurso
+
+## Key Vault
+
+* Almacena los datos sensibles de la organizacion
+  * Claves
+  * Secretos
+  * Certificados
+
+## Log Analytics Workspace
+
+* Una base de datos (con tablas) para almacenar logs
+* Cuando creo el recurso crea unas tablas vacias por decto
+* Podemos ir a la subscripcion, ver el Activity Log y exportalo en el Log Analitics Worskpace
+
+## Storage Account
+
+* Una cuenta de almacenamiento para guardar achivos
+* Los archivos se suben en containers
+* Los archivos dentro de un container se llama blob
+
+----
+
 ## Auticancion en SQL Server
 
 <img width="524" height="239" alt="image" src="https://github.com/user-attachments/assets/92ba8a62-476e-4c8e-996d-7144521e1e20" />
@@ -88,7 +117,20 @@ select FirstName,LastName from SalesLT.Customer
 ```
 
 * Ver los registros de auditoria y como me avisa cuando se accede a datos sensibles
-  
+
+----
+
+# Planteo de Escenario
+
+* Tengo una SQL Server que tiene acceso privado (private endpoint).
+* No permite conexiones desde IP Publicas. Solo tiene IP Privada
+* No puedo modificar el recurso del SQL Server como Restriccion
+* Como puedo hacer para conectarme al SQL server desde mi casa pudiendo crear o ulizar recursos de Azure adicionales
+   * Firewall
+
+----
+
+----
 # Microsoft Defender
 
 * Microsoft Defender for Cloud
