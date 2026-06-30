@@ -46,3 +46,16 @@
 > [!NOTE]
 > Objetivo: Centraliza el monitoreo de muchas VM en un solo lugar para no tener que conectarme individualmente a cada una de ellas
 
+
+* Definir en el Azure Monitor el DCR (Data Collection Rule)
+  * dcr-az500-clase-seis
+  * Vamos a decir que los datos de la VM (de Administrador de Tareas y los eventos del SO) se escriban en el Log Analytics Workspace
+  * Habiglitamos recoleccion de
+    * Eventos del SO
+    * Performance Monitor
+   
+* Definir en el azure monito el VMInsight para tablas adicionales:
+  * VMProcess
+
+
+  
