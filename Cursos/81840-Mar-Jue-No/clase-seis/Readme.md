@@ -57,5 +57,51 @@
 * Definir en el azure monito el VMInsight para tablas adicionales:
   * VMProcess
 
+ > [!NOTE]
+> Si no instala el servicio en la virtual hay que hacerlo manualmente
 
-  
+```
+az vm extension set --resource-group rg-az500-clase-seis --vm-name vm-az500-clase-seis --name DependencyAgentWindows --publisher Microsoft.Azure.Monitoring.DependencyAgent --version 9.10 --settings '{"enableAMA": "true"}'
+```
+
+* VEr la tablas:
+  * Perf : Performance Counter de la(s) vm(s)
+  * Event : Ves el event viewer de la(s) vm(s)
+ 
+```kql
+Event
+| summarize Cantidad = count() by EventLevelName
+| order by Cantidad desc
+| render columnchart
+```
+
+* Extensiones que se pueden instalar en las VM
+ * (AMA) Azure Monitor Windows Agent : Logs y metricas
+ * (DA) Dependenci Agent : Procesos, Conexiones abiertas
+ * (MDE) Microsoft Defender for endpoint : Detecta amenazas cuando tengo defender habilitado
+
+---
+
+# Microsoft Defender (para VMS)
+
+* Crear el Resource Group
+* Crear una VM
+* Crear un log analycts workspace
+* Habilitar el Dependency Agent en el CLI
+
+```
+az vm extension set --resource-group rg-az500-clase-seis --vm-name vm-az500-clase-seis --name DependencyAgentWindows --publisher Microsoft.Azure.Monitoring.DependencyAgent --version 9.10 --settings '{"enableAMA": "true"}'
+```
+
+* Habilitar el VMInsights el monitor
+
+* Habilitar el Defender for Servers en Defender
+
+* Defender For Cloud (producto)
+  * CWPP (Feature : Cloud Workload Protecto / Proteccion de Cargas de Trabajo)
+     * Defender for Server (para VMs) (sub producto o modulo habilitable)
+       * Plan P1
+       * Plan P2
+     * Defender for Storage    (sub producto o modulo habilitable)
+     * Defender for Containers (sub producto o modulo habilitable)
+     * Defender for SQL        (sub producto o modulo habilitable)
