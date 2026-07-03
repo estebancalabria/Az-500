@@ -295,3 +295,18 @@ internal class Patient
     public DateTime BirthDate { get; set; }
 }
 ```
+
+---
+
+# Conectarse a VM por VPN
+
+* Crear el Resource Group
+* Crear una VM con todo
+* En la VNET creada crear una Subnet que se llame GatewaySubnet
+  
+* Ir a Hybrid connectivity -> VPN Gateway
+  * vpn-az500-clase-siete
+  * Tarda un monton en crearse
+    
+* Me conecto desde mi maquina a la VPN por la IP publica del VPN gateway
+  * Me requiere registrar una app y me pide el clienteID y clientSecret
