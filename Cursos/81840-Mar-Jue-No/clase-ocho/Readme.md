@@ -26,26 +26,26 @@
   * LRS : Se copia en otro rack el SA  << Es la que elegimos por defecto
   * GRS : Se copia en otra region
 
-# Seguridad de Costos (Access Tiers)
+## Seguridad de Costos (Access Tiers)
 
 * Hot  : Barato y rapido el acceso, mas caro el almacenamiento
 * Cool : Sale intermedio el acceso y el almacenamiento
 * Cold : Caro el acceso, barato el almacenamiento (Backups)
 * Archive : Baratisimo el almacenamiento, El acceso es caro y hay que esperar dos horas para acceder
 
-# Seguridad de acceso
+## Seguridad de acceso
 
 * El acceso puede ser
   * Publico (Desde interenet)
   * Privado (Solo dentro de una vnet de Azure)
  
-# Seguridad ante ataques
+## Seguridad ante ataques
 
 * Un usuario malicioso (hacker) suele querer borrar los storage account para generar un danio en la empresa
 * Soft Delete : Cantidad de dias que un elemento del storage account (blob, file share, queue, table..)
 * Versioning : Aunditoria y cambios que se hacen sobre los blob
 
-# Segurada Automatica
+## Segurada Automatica
 
 * Microsoft Defender
   * Microsoft defender for Storage
@@ -59,7 +59,7 @@
 > Alertas que se registran en el Defender For Storage
 > https://learn.microsoft.com/en-us/azure/defender-for-cloud/alerts-azure-storage
 
-# Seguridad de datos
+## Seguridad de datos
 
 * Toda la informacion que se guarda en un SA esta enctiptada puedo elegir
   * Encriptacion con clave de Microsoft (Transparente)
@@ -67,7 +67,7 @@
 
 > Creamos el Storage account
 
-## Seguridad de acceso a Blobs
+### Seguridad de acceso a Blobs
 
 * Si creo un contenedor publico y un blob publico cualquiera puede acceder al mismo
 * Si creo un conetedor privado, sus blobs van a ser privados y no se pueden acceder mendiante su URL
@@ -76,7 +76,7 @@
       * Independiente (defininendo los permisos individuales del archivo)
       * Asociada a un Access Policy : (donde ya tengo definido los permisos de ante mano)
 
-## Seguridad en File Shares 
+### Seguridad en File Shares 
 
 * Publicamente me puedo conectar
   * Autenticacion con Entra
@@ -84,7 +84,7 @@
     * Si vamos al SA en Security + Networking -> Access Key
     * Ojo que si se filtra la clave del storage se puede conectar cualquiera
 
-# Crear una VM 
+### Crear una VM para pemitir acceso al FileShare Solo de ahi
 
 * Crear una VM
   * vm-az500-clase-ocho
@@ -98,3 +98,5 @@
   * En la misma pantalla Security + Networking voy a crear un private endpoint
     * "+ Create Private Endpoint"
     * Le asigno la ip 10.0.0.5 (una mas que la VM)   
+
+----
