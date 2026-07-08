@@ -100,3 +100,43 @@
     * Le asigno la ip 10.0.0.5 (una mas que la VM)   
 
 ----
+
+# Alarmas y monitoring
+
+* Las alertas se configuran en la parte de Monitor
+
+* Primero configuramos un Action Group (El que recibe la alerta)
+ * Monitor -> Alerts -> Create -> Action Groups
+ * Configurar que mande una alerta a un correo conocido (que tengan acceso)
+
+* Crear un Network Security Group (Vamos a definir una alerta sobre este recurso)
+ * nsg-no-borrar
+
+* Definir una alerta
+  * Defnir el Scope : El resource Group
+  * Definir el Signal : "Delete Network Security Group"
+  * Elegir el Accion Group creado anteriormente
+ 
+* Eliminar el NSG creado anteriormente
+
+* Esperar.... (1 millon de anios despues)
+
+* Chequear que aparece la alerta
+  * En el portal de Azure
+  * En el mail
+ 
+## Metricas
+
+* Crear una VM
+* Ver metricas sobre esa VM
+  * Percentage CPU
+  * Available Memory Bytes
+
+## Configurar alertas sobre metricas
+
+* Podemos crear una alerta nueva pero esta vez basada en una metrica en lugar de un evento concreto
+
+* Definir una alerta
+  * Defnir el Scope : La maquina Virtual
+  * Definir el Signal : Metrica - Percentage CPU - El pocentaje del cpu supera al 90% durante 5 minutos
+  * Elegir el Accion Group creado anteriormente
