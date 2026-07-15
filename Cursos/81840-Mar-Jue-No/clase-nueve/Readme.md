@@ -36,7 +36,13 @@
 
 > [!NOTE]
 > Para cargar datos vamos a explorar este repo : https://github.com/OTRF/Security-Datasets
-> Bajamos este zip : https://github.com/OTRF/Security-Datasets/blob/master/datasets/atomic/windows/defense_evasion/host/psh_mshta_html_application_execution.zip
+
+> [!NOTE]
+> Muchas Funcionlidades del sentinel se migraron a
+> https://security.microsoft.com/
+
+
+* Bajamos este zip : https://github.com/OTRF/Security-Datasets/blob/master/datasets/atomic/windows/defense_evasion/host/psh_mshta_html_application_execution.zip
  
 * Crear el Resource Group
   * rg-az500-clase-nueve
@@ -213,3 +219,43 @@ print("Carga finalizada.")
 ```
 az monitor log-analytics workspace get-shared-keys --resource-group rg-az500-clase-nueve --workspace-name log-az500-clase-nueve --query primarySharedKey -o tsv
 ```
+
+* Copiar la Key que me devuelve el comando (no lo encontre como sacar en el portal)
+
+* Ejecutamos el codigo de colab con el workspace IF y la Key
+
+* Verifica que este la tabla SecurityLab_CL
+
+* Cuando aparezca la tabla en la parte de logs ejecutar el KQL
+
+```
+SecurityLab_CL
+| take 20
+```
+
+* Vamos al recurso de Sentinel y asociar un Sentinel con un Log Analytics Workpace
+
+> [!NOTE]
+> Nosotros cargamos los datos a mano pero la idea es ir a data conector y automatizar la ingesta de datos
+
+* En cualquier opcion que me muestre que se migro al defender portal  le doy click para Ir al defender port
+
+* Esta linea verificaria que hay ataque
+
+```
+SecurityLab_CL
+| where CommandLine_s has "mshta"
+```
+
+---
+
+# Chage Feed y versionado
+
+* Crear Resource Group
+* Crear Storage Account
+* Subir un .txt a un blob
+* Cambiar el contenido varias veces
+* Ver las distintas versiones en el archivo
+* Descargar el archivo .avro del directorio $blobchangefeed
+* Ver los cambios en ese archivo  instalando una extension del vscode
+ * https://marketplace.visualstudio.com/items?itemName=yasunari89.avro-viewer
