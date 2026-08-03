@@ -9,3 +9,5 @@
 * Para que una app pueda acceder a Microsoft Graph y modificar propiedades de usuarios en Azure AD, primero hay que crear un **app registration** en Azure AD: eso genera la identidad de la app y permite luego configurarle permisos de API (por ej. User.ReadWrite.All) y credenciales.
 
 * Azure AD Identity Protection con user risk policy y sign-in risk policy requiere licencias **Azure AD Premium P2**; con Plan 1 no está disponible, por lo que primero hay que **comprar licencias Premium P2** para los usuarios.
+
+* Para probar el impacto de una Conditional Access policy sin afectar a los usuarios, la policy debe estar en **Report-only**: en ese modo se registran los resultados de evaluación (incluido lo que arroja la herramienta What If) pero no se aplica el bloqueo/enforcement real.
