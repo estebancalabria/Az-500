@@ -11,3 +11,5 @@
 * Azure AD Identity Protection con user risk policy y sign-in risk policy requiere licencias **Azure AD Premium P2**; con Plan 1 no está disponible, por lo que primero hay que **comprar licencias Premium P2** para los usuarios.
 
 * Para probar el impacto de una Conditional Access policy sin afectar a los usuarios, la policy debe estar en **Report-only**: en ese modo se registran los resultados de evaluación (incluido lo que arroja la herramienta What If) pero no se aplica el bloqueo/enforcement real.
+
+* El template CSV de "Bulk add members" para una administrative unit solo requiere el **User Principal Name (UPN)** de cada usuario; agregar otras columnas no es necesario para identificar y agregar los miembros. 
