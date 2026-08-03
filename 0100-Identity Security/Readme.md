@@ -1796,3 +1796,8 @@ Microsoft recomienda habilitar siempre **Password Hash Synchronization**, inclus
 - Reduce el impacto de incidentes como ransomware o caídas de Active Directory.
 
 En la mayoría de los escenarios empresariales, **Password Hash Synchronization** constituye la opción preferida por su simplicidad, resiliencia y menor costo operativo. **Pass-Through Authentication** es adecuada cuando se necesita aplicar inmediatamente las políticas de Active Directory sin almacenar hashes en la nube, mientras que **Federación con AD FS** debe reservarse para organizaciones con requisitos avanzados de autenticación o inversiones existentes en infraestructura federada.
+
+
+---
+
+Seguir de : https://learn.microsoft.com/es-es/training/modules/manage-security-controls-identity-access/16-what-microsoft-entra-authentication
