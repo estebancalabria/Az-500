@@ -987,4 +987,274 @@ Permitir     Solicitar MFA
 Corrección automática o manual
 ```
 
+---
+
+# Microsoft Entra Connect
+
+**Microsoft Entra Connect** es la solución de Microsoft para implementar una **identidad híbrida**, sincronizando usuarios, grupos y credenciales entre **Active Directory local** y **Microsoft Entra ID**, permitiendo que los usuarios utilicen una única identidad tanto para recursos locales como en la nube.
+
+## Características principales
+
+Microsoft Entra Connect integra varias funcionalidades en una única solución:
+
+### Password Hash Synchronization (PHS)
+
+Sincroniza el **hash** de la contraseña del usuario desde Active Directory hacia Microsoft Entra ID.
+
+**Ventajas**
+
+- Inicio de sesión con la misma contraseña.
+- No requiere infraestructura adicional.
+- Método recomendado para la mayoría de las organizaciones.
+
+---
+
+### Pass-Through Authentication (PTA)
+
+Permite validar la contraseña directamente contra Active Directory local.
+
+Características:
+
+- La contraseña nunca se almacena en Microsoft Entra ID.
+- No requiere implementar una infraestructura de federación.
+- Proporciona una experiencia de inicio de sesión unificada.
+
+---
+
+### Integración con AD FS (Federación)
+
+Microsoft Entra Connect puede configurar automáticamente un entorno federado utilizando **Active Directory Federation Services (AD FS)**.
+
+Incluye:
+
+- Configuración inicial.
+- Administración de certificados.
+- Implementación de nuevos servidores AD FS.
+- Administración del entorno federado.
+
+---
+
+### Sincronización de directorios
+
+Permite sincronizar automáticamente:
+
+- Usuarios
+- Grupos
+- Contactos
+- Objetos del directorio
+- Hashes de contraseñas
+
+Garantizando que la información permanezca consistente entre Active Directory y Microsoft Entra ID.
+
+---
+
+### Microsoft Entra Connect Health
+
+Incluye monitoreo continuo del entorno híbrido.
+
+Permite supervisar:
+
+- Estado de sincronización.
+- Estado de AD FS.
+- Rendimiento.
+- Disponibilidad.
+- Alertas.
+- Tendencias de uso.
+
+Toda la información se centraliza en el **Microsoft Entra Admin Center**.
+
+---
+
+# ¿Por qué utilizar Microsoft Entra Connect?
+
+Implementar una identidad híbrida ofrece numerosos beneficios:
+
+- Una única identidad para recursos locales y en la nube.
+- Inicio de sesión único (SSO).
+- Integración transparente con Microsoft 365.
+- Administración centralizada de identidades.
+- Sincronización automática de usuarios y grupos.
+- Compatibilidad con múltiples escenarios híbridos.
+
+---
+
+# Microsoft Entra Connect Health
+
+Microsoft Entra Connect Health proporciona una supervisión continua de la infraestructura de identidad local para garantizar la disponibilidad de los servicios de autenticación.
+
+## Funcionalidades
+
+- Supervisión de AD FS.
+- Supervisión de Azure AD Connect.
+- Supervisión de Domain Services.
+- Panel centralizado de salud.
+- Alertas automáticas.
+- Métricas de rendimiento.
+- Estadísticas de utilización.
+
+---
+
+## Beneficios
+
+### Seguridad
+
+- Detección de bloqueos de extranet.
+- Informes de errores de autenticación.
+- Cumplimiento de requisitos de privacidad.
+
+### Monitoreo
+
+- Estado de servidores.
+- Disponibilidad.
+- Conectividad.
+- Rendimiento.
+- Mantenimiento preventivo.
+
+### Facilidad de administración
+
+- Instalación rápida mediante agentes.
+- Actualización automática.
+- Datos disponibles pocos minutos después de instalar el agente.
+
+### Analítica
+
+Permite conocer:
+
+- Aplicaciones más utilizadas.
+- Solicitudes de tokens.
+- Ubicaciones de conexión.
+- Estadísticas de autenticación.
+
+---
+
+# Microsoft Entra Cloud Sync
+
+**Microsoft Entra Cloud Sync** es la evolución de la sincronización híbrida basada en agentes ligeros administrados desde la nube.
+
+En lugar de depender completamente de Microsoft Entra Connect, utiliza un **Cloud Provisioning Agent** que simplifica la implementación y la administración.
+
+---
+
+## Ventajas de Cloud Sync
+
+### Agentes ligeros
+
+No requiere instalar un servidor completo de sincronización.
+
+Los agentes únicamente actúan como puente entre:
+
+```text
+Active Directory
+        │
+Provisioning Agent
+        │
+Microsoft Entra ID
+```
+
+---
+
+### Alta disponibilidad
+
+Es posible instalar varios agentes activos simultáneamente para ofrecer:
+
+- Alta disponibilidad.
+- Balanceo.
+- Mayor tolerancia a fallos.
+
+---
+
+### Soporte para múltiples bosques
+
+Cloud Sync permite escenarios que anteriormente eran complejos, como:
+
+- Múltiples bosques.
+- Bosques desconectados.
+- Fusiones y adquisiciones.
+- Organizaciones con infraestructuras independientes.
+
+---
+
+### Grupos grandes
+
+Admite grupos con hasta **50.000 miembros** utilizando reglas de sincronización optimizadas.
+
+---
+
+# ¿Cómo funciona Cloud Sync?
+
+Toda la configuración de sincronización reside en Microsoft Entra ID.
+
+Los agentes locales únicamente ejecutan las operaciones necesarias.
+
+```text
+Microsoft Entra ID
+        │
+Configuración de sincronización
+        │
+Provisioning Agent
+        │
+Active Directory
+```
+
+Esto reduce considerablemente la complejidad administrativa.
+
+---
+
+# Comparación: Microsoft Entra Connect vs Cloud Sync
+
+| Característica | Entra Connect | Cloud Sync |
+|----------------|---------------|------------|
+| Sincronización de usuarios | ✅ | ✅ |
+| Sincronización de grupos | ✅ | ✅ |
+| Sincronización de contactos | ✅ | ✅ |
+| Password Hash Sync | ✅ | ✅ |
+| Pass-Through Authentication | ✅ | ❌ |
+| Federación (AD FS) | ✅ | ✅ |
+| Agente ligero | ❌ | ✅ |
+| Múltiples agentes activos | ❌ | ✅ |
+| Bosques desconectados | ❌ | ✅ |
+| Aprovisionamiento bajo demanda | ❌ | ✅ |
+| Sincronización de dispositivos | ✅ | ❌ |
+| LDAP | ✅ | ❌ |
+| Personalización avanzada de flujos | ✅ | Limitada |
+
+---
+
+# ¿Cuándo utilizar cada solución?
+
+## Microsoft Entra Connect
+
+Recomendado cuando:
+
+- Se requiere **Pass-Through Authentication (PTA)**.
+- Se utilizan directorios LDAP.
+- Se necesitan sincronizaciones avanzadas.
+- Se requiere una personalización compleja de atributos.
+- Se sincronizan dispositivos.
+
+---
+
+## Microsoft Entra Cloud Sync
+
+Recomendado cuando:
+
+- Se desea una implementación sencilla.
+- Se requieren múltiples agentes para alta disponibilidad.
+- Existen varios bosques de Active Directory desconectados.
+- Se busca minimizar la infraestructura local.
+- Se prioriza una administración centralizada desde la nube.
+
+---
+
+# Resumen
+
+| Microsoft Entra Connect | Microsoft Entra Cloud Sync |
+|--------------------------|----------------------------|
+| Solución híbrida tradicional | Solución híbrida moderna |
+| Mayor cantidad de funcionalidades | Arquitectura simplificada |
+| Más opciones de personalización | Menor complejidad |
+| Requiere servidor de sincronización | Utiliza agentes ligeros |
+| Ideal para escenarios complejos | Ideal para implementaciones modernas |
+
+---
 Este flujo muestra cómo **Microsoft Entra Identity Protection** trabaja junto con **Conditional Access** para implementar un modelo de seguridad **Zero Trust**, evaluando continuamente el riesgo antes de conceder acceso a los recursos corporativos.
