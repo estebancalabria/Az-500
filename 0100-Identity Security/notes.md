@@ -12,4 +12,4 @@
 
 * Para probar el impacto de una Conditional Access policy sin afectar a los usuarios, la policy debe estar en **Report-only**: en ese modo se registran los resultados de evaluación (incluido lo que arroja la herramienta What If) pero no se aplica el bloqueo/enforcement real.
 
-* El template CSV de "Bulk add members" para una administrative unit solo requiere el **User Principal Name (UPN)** de cada usuario; agregar otras columnas no es necesario para identificar y agregar los miembros. 
+* El bulk add members para una administrative unit en Azure AD requiere el **Object ID** de cada usuario (no UPN ni display name), ya que es el identificador único e inmutable que garantiza identificar correctamente al usuario.
