@@ -7,3 +7,5 @@
 * La opción "token encryption" solo se habilita en el portal después de **subir un certificado** (X.509) para la app; sin certificado cargado, el toggle permanece deshabilitado/no disponible.
 
 * Para que una app pueda acceder a Microsoft Graph y modificar propiedades de usuarios en Azure AD, primero hay que crear un **app registration** en Azure AD: eso genera la identidad de la app y permite luego configurarle permisos de API (por ej. User.ReadWrite.All) y credenciales.
+
+* Azure AD Identity Protection con user risk policy y sign-in risk policy requiere licencias **Azure AD Premium P2**; con Plan 1 no está disponible, por lo que primero hay que **comprar licencias Premium P2** para los usuarios.
