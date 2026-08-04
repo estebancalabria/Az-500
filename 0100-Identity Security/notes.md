@@ -19,3 +19,5 @@
 * Cómo limitar a 2hs el tiempo activo de un rol elegible en PIM: editar los ajustes de activación del rol (role activation settings).
   
 * "Logon options" es el setting de la Intranet Zone que controla el comportamiento de autenticación automática (integrated Windows authentication), necesario para que SSO funcione sin prompts al agregar los endpoints de Azure AD (login.microsoftonline.com, etc.) a la zona.
+
+* Azure AD Password Protection permite definir listas de contraseñas prohibidas personalizadas (custom banned password list) para bloquear variaciones de términos específicos, como el nombre de la organización
