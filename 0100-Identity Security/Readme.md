@@ -1797,7 +1797,272 @@ Microsoft recomienda habilitar siempre **Password Hash Synchronization**, inclus
 
 En la mayoría de los escenarios empresariales, **Password Hash Synchronization** constituye la opción preferida por su simplicidad, resiliencia y menor costo operativo. **Pass-Through Authentication** es adecuada cuando se necesita aplicar inmediatamente las políticas de Active Directory sin almacenar hashes en la nube, mientras que **Federación con AD FS** debe reservarse para organizaciones con requisitos avanzados de autenticación o inversiones existentes en infraestructura federada.
 
+---
+
+# Autenticación en Microsoft Entra ID
+
+La autenticación es el componente central de Microsoft Entra ID para validar la identidad de los usuarios cuando acceden a dispositivos, aplicaciones y servicios. Más allá de validar usuario y contraseña, Microsoft Entra incorpora múltiples mecanismos para mejorar la seguridad, reducir la dependencia del soporte técnico y ofrecer una mejor experiencia al usuario.
+
+## Componentes principales
+
+* **Self-Service Password Reset (SSPR)** para restablecimiento y cambio de contraseñas.
+* **Microsoft Entra Multi-Factor Authentication (MFA)**.
+* **Password Writeback** para sincronizar cambios de contraseña hacia Active Directory local.
+* **Password Protection** para aplicar políticas de contraseñas también en entornos híbridos.
+* **Autenticación sin contraseña (Passwordless)** mediante tecnologías modernas.
 
 ---
 
-Seguir de : https://learn.microsoft.com/es-es/training/modules/manage-security-controls-identity-access/16-what-microsoft-entra-authentication
+# Self-Service Password Reset (SSPR)
+
+El autoservicio de restablecimiento de contraseña permite que los usuarios administren sus propias credenciales sin depender del departamento de TI.
+
+## Escenarios soportados
+
+* Cambio voluntario de contraseña.
+* Restablecimiento cuando el usuario olvidó su contraseña.
+* Desbloqueo de cuentas bloqueadas.
+
+## Beneficios
+
+* Reduce llamadas al Service Desk.
+* Disminuye tiempos de inactividad.
+* Permite Password Writeback para sincronizar automáticamente la nueva contraseña hacia Active Directory local.
+* Mejora la continuidad operativa.
+
+---
+
+# Microsoft Entra Multi-Factor Authentication (MFA)
+
+La autenticación multifactor incrementa la seguridad solicitando dos o más factores de autenticación.
+
+## Factores soportados
+
+### Algo que sabes
+
+* Contraseña
+* PIN
+
+### Algo que tienes
+
+* Microsoft Authenticator
+* Código SMS
+* Llamada telefónica
+* Token OATH
+* Llave FIDO2
+
+### Algo que eres
+
+* Huella digital
+* Reconocimiento facial
+* Biometría
+
+---
+
+## Beneficios
+
+* Reduce el riesgo ante robo de credenciales.
+* Compatible con Conditional Access.
+* Compatible con Passwordless Authentication.
+* Compatible con Self-Service Password Reset.
+* Permite múltiples métodos de autenticación de respaldo.
+
+---
+
+# Implementación de MFA mediante Conditional Access
+
+Microsoft recomienda habilitar MFA utilizando **Conditional Access** en lugar de habilitar MFA usuario por usuario.
+
+## Flujo de implementación
+
+1. Crear una nueva política de Conditional Access.
+2. Seleccionar usuarios o grupos (ejemplo: MFA-Test-Group).
+3. Seleccionar las aplicaciones protegidas.
+4. Configurar los controles de acceso.
+5. Requerir Multi-Factor Authentication.
+6. Habilitar la política.
+7. Probar el inicio de sesión con un usuario de prueba.
+
+---
+
+## Componentes de una política
+
+### Asignaciones
+
+* Usuarios
+* Grupos
+* Aplicaciones
+* Workload Identities
+
+### Condiciones
+
+* Aplicaciones en la nube
+* Riesgo
+* Plataforma
+* Ubicación
+* Cliente
+
+### Controles
+
+* Requerir MFA
+* Dispositivo conforme
+* Aplicación aprobada
+* Password Change
+* Session Controls
+
+---
+
+# Configuración avanzada de MFA
+
+Microsoft Entra permite personalizar múltiples aspectos de MFA.
+
+## Bloqueo de cuentas
+
+Permite bloquear temporalmente usuarios tras múltiples intentos fallidos.
+
+Configuraciones disponibles:
+
+* Número máximo de intentos.
+* Tiempo hasta reiniciar contador.
+* Tiempo de desbloqueo automático.
+
+---
+
+## Bloqueo manual de usuarios
+
+Un administrador puede:
+
+* Bloquear usuarios.
+* Desbloquear usuarios.
+* Registrar el motivo del bloqueo.
+
+Muy útil cuando un dispositivo fue robado o comprometido.
+
+---
+
+## Reportar actividad sospechosa
+
+Los usuarios pueden indicar que una solicitud MFA fue fraudulenta utilizando Microsoft Authenticator.
+
+Cuando esto ocurre:
+
+* Identity Protection marca al usuario como **High Risk**.
+* Se generan eventos de auditoría.
+* Aparecen registros en:
+
+  * Risk Detections
+  * Sign-in Logs
+  * Audit Logs
+
+Posteriormente un administrador puede investigar y remediar el incidente.
+
+---
+
+## Alertas y notificaciones
+
+Microsoft Entra puede enviar correos electrónicos automáticos cuando:
+
+* Un usuario reporta fraude.
+* Se detectan actividades sospechosas.
+* Se producen eventos de riesgo.
+
+---
+
+# Tokens OATH
+
+Microsoft Entra soporta tokens hardware basados en:
+
+* OATH TOTP
+* SHA-1
+
+Características:
+
+* Código renovado cada 30 o 60 segundos.
+* Importación masiva mediante CSV.
+* Activación desde Azure Portal.
+* Compatible con hasta cinco métodos MFA por usuario.
+
+Formato del archivo CSV:
+
+```
+UPN
+Número de serie
+Clave secreta
+Intervalo
+Fabricante
+Modelo
+```
+
+---
+
+# Passwordless Authentication
+
+Microsoft Entra permite eliminar completamente el uso de contraseñas.
+
+Métodos soportados:
+
+* Windows Hello for Business
+* FIDO2 Security Keys
+* Microsoft Authenticator
+
+## Beneficios
+
+* Mayor seguridad.
+* Eliminación de ataques de phishing basados en contraseña.
+* Mejor experiencia de usuario.
+* Reducción del soporte técnico.
+
+---
+
+# Integración híbrida de autenticación
+
+Microsoft Entra permite mantener sincronizados los entornos híbridos mediante:
+
+* Password Writeback
+* Password Protection
+* Password Hash Synchronization
+* Pass-through Authentication
+* Federation con AD FS
+
+Esto permite que los usuarios mantengan una identidad unificada tanto para recursos locales como para recursos en la nube.
+
+---
+
+# Buenas prácticas recomendadas
+
+Microsoft recomienda:
+
+* Implementar MFA mediante Conditional Access.
+* Habilitar Self-Service Password Reset.
+* Configurar Password Writeback.
+* Habilitar Passwordless Authentication cuando sea posible.
+* Permitir múltiples métodos MFA por usuario.
+* Supervisar continuamente los eventos de riesgo mediante Identity Protection.
+* Investigar reportes de fraude generados por los usuarios.
+* Utilizar grupos piloto antes de desplegar MFA a toda la organización.
+* Integrar Identity Protection con Microsoft Sentinel o un SIEM para automatizar la respuesta a incidentes.
+
+---
+
+## Relación con otros componentes de Microsoft Entra
+
+La autenticación se integra directamente con:
+
+* Microsoft Entra Identity Protection
+* Conditional Access
+* Microsoft Entra Connect
+* Microsoft Entra Cloud Sync
+* Password Hash Synchronization
+* Pass-through Authentication
+* Federation (AD FS)
+* External Identities (B2B)
+* Windows Hello for Business
+* FIDO2 Security Keys
+* Microsoft Authenticator
+* Microsoft Sentinel
+* Microsoft Graph API
+
+Este conjunto de funcionalidades constituye la base del modelo de **Zero Trust**, donde cada autenticación es evaluada dinámicamente considerando la identidad, el riesgo, el dispositivo, la ubicación y el contexto antes de conceder acceso a los recursos corporativos.
+
+
+
