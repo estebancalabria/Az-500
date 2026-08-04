@@ -15,3 +15,5 @@
 * El bulk add members para una administrative unit en Azure AD requiere el **Object ID** de cada usuario (no UPN ni display name), ya que es el identificador único e inmutable que garantiza identificar correctamente al usuario.
 
 * Rol para crear managed identities con least privilege: Managed Identity Contributor.
+
+* Cómo limitar a 2hs el tiempo activo de un rol elegible en PIM: editar los ajustes de activación del rol (role activation settings).
