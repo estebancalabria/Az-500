@@ -17,3 +17,5 @@
 * Rol para crear managed identities con least privilege: Managed Identity Contributor.
 
 * Cómo limitar a 2hs el tiempo activo de un rol elegible en PIM: editar los ajustes de activación del rol (role activation settings).
+  
+* "Logon options" es el setting de la Intranet Zone que controla el comportamiento de autenticación automática (integrated Windows authentication), necesario para que SSO funcione sin prompts al agregar los endpoints de Azure AD (login.microsoftonline.com, etc.) a la zona.
