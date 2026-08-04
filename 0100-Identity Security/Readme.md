@@ -2065,4 +2065,569 @@ La autenticación se integra directamente con:
 Este conjunto de funcionalidades constituye la base del modelo de **Zero Trust**, donde cada autenticación es evaluada dinámicamente considerando la identidad, el riesgo, el dispositivo, la ubicación y el contexto antes de conceder acceso a los recursos corporativos.
 
 
+# Resumen – Autenticación e Identidad Híbrida en Microsoft Entra ID
+
+## Sincronización de hash de contraseñas (Password Hash Synchronization - PHS)
+
+La **Sincronización de Hash de Contraseñas (PHS)** es el método de autenticación híbrida más simple de Microsoft Entra. Microsoft Entra Connect sincroniza el **hash del hash** de la contraseña desde Active Directory local hacia Microsoft Entra ID; nunca se sincroniza la contraseña en texto plano.
+
+### Funcionamiento
+
+1. El usuario cambia la contraseña en Active Directory.
+2. Microsoft Entra Connect calcula un hash adicional.
+3. Ese hash se sincroniza con Microsoft Entra ID.
+4. El usuario inicia sesión en Microsoft 365 o Azure usando la misma contraseña del dominio.
+
+### Ventajas
+
+* Un único usuario y contraseña para nube y entorno local (SSO parcial).
+* Reduce llamadas al Help Desk.
+* Fácil implementación.
+* Compatible con Microsoft 365 y Azure.
+* Permite detección de credenciales filtradas (Identity Protection).
+
+### Credenciales filtradas
+
+Microsoft compara credenciales expuestas en filtraciones públicas con las cuentas sincronizadas.
+
+Si encuentra coincidencias:
+
+* La cuenta pasa a estado **High Risk**.
+* Puede requerirse MFA.
+* Puede bloquearse mediante Identity Protection.
+
+> Solo analiza filtraciones descubiertas después de habilitar PHS.
+
+### También puede utilizarse como respaldo
+
+Aunque la organización utilice **AD FS**, Microsoft recomienda habilitar PHS como mecanismo de recuperación si la infraestructura de federación falla.
+
+### Requisitos
+
+* Microsoft Entra Connect.
+* Sincronización de directorios.
+* Habilitar Password Hash Synchronization.
+
+---
+
+# Pass-through Authentication (PTA)
+
+La **Autenticación de Paso a Través** valida la contraseña directamente contra el Active Directory local.
+
+La contraseña:
+
+* Nunca se almacena en la nube.
+* Nunca se sincroniza.
+
+Microsoft Entra únicamente reenvía la solicitud al agente instalado on-premises.
+
+## Flujo
+
+Usuario → Microsoft Entra → Agente PTA → Active Directory → Validación → Acceso
+
+## Ventajas
+
+### Excelente experiencia de usuario
+
+* Una única contraseña.
+* Menos llamadas al soporte.
+* Compatible con SSPR.
+
+### Fácil implementación
+
+* Solo requiere instalar un agente.
+* Sin abrir puertos entrantes.
+* Solo conexiones salientes.
+
+### Seguridad
+
+* La contraseña nunca sale del entorno local.
+* Compatible con:
+
+  * MFA
+  * Conditional Access
+  * Password Protection
+  * Bloqueo de autenticación heredada
+
+### Alta disponibilidad
+
+Puede instalar múltiples agentes PTA para evitar un punto único de falla.
+
+### Características
+
+* Compatible con Office moderno.
+* Compatible con múltiples bosques.
+* Compatible con Writeback de contraseñas.
+* Gratuito.
+* Configurable desde Microsoft Entra Connect.
+
+---
+
+# Federación con Microsoft Entra ID (AD FS)
+
+La federación permite que **toda la autenticación ocurra en el entorno local**.
+
+Microsoft Entra nunca valida la contraseña.
+
+La validación la realiza AD FS u otro proveedor de identidad como PingFederate.
+
+## Flujo
+
+Usuario → Microsoft Entra → AD FS → Active Directory → Token → Microsoft Entra
+
+## Cuándo utilizarlo
+
+Cuando la organización necesita:
+
+* Políticas de autenticación complejas.
+* Smart Cards.
+* Requisitos regulatorios.
+* Métodos personalizados de autenticación.
+
+## Ventajas
+
+* Control total del proceso de autenticación.
+* Inicio de sesión único.
+* Compatible con múltiples dominios.
+* Puede coexistir con Password Hash Sync como respaldo.
+
+## Microsoft Entra Connect permite
+
+* Instalar AD FS.
+* Configurar granjas.
+* Reparar relaciones de confianza.
+* Agregar servidores.
+* Agregar Web Application Proxy.
+* Renovar certificados.
+* Agregar dominios federados.
+* Personalizar página de login.
+* Modificar reglas de Claims.
+
+---
+
+# Comparación de métodos híbridos
+
+| Característica          | PHS               | PTA                    | Federación                |
+| ----------------------- | ----------------- | ---------------------- | ------------------------- |
+| Contraseña en nube      | Hash sincronizado | No                     | No                        |
+| Validación              | Microsoft Entra   | Active Directory       | AD FS                     |
+| Requiere servidores     | No                | Agente ligero          | Sí                        |
+| Fácil implementación    | ⭐⭐⭐⭐⭐             | ⭐⭐⭐⭐                   | ⭐⭐                        |
+| Alta disponibilidad     | Sí                | Sí (múltiples agentes) | Depende de AD FS          |
+| Compatible con MFA      | Sí                | Sí                     | Sí                        |
+| Recomendación Microsoft | ✅ Sí              | Sí                     | Solo cuando sea necesario |
+
+---
+
+# Autenticación en Microsoft Entra ID
+
+La autenticación en Microsoft Entra va mucho más allá de usuario y contraseña. Incluye mecanismos modernos para mejorar la seguridad y simplificar la experiencia del usuario.
+
+## Componentes principales
+
+* Self-Service Password Reset (SSPR).
+* Microsoft Entra MFA.
+* Password Writeback.
+* Password Protection para Active Directory local.
+* Autenticación sin contraseña.
+
+## Beneficios
+
+* Reduce llamadas al Help Desk.
+* Mejora la experiencia del usuario.
+* Permite autenticación moderna.
+* Mayor seguridad frente a ataques de contraseñas.
+
+---
+
+# Self-Service Password Reset (SSPR)
+
+Permite que el usuario administre su propia contraseña sin intervención del administrador.
+
+## Escenarios
+
+### Cambio de contraseña
+
+El usuario conoce la contraseña y desea modificarla.
+
+### Restablecimiento
+
+Olvidó la contraseña.
+
+### Desbloqueo de cuenta
+
+La cuenta quedó bloqueada.
+
+## Password Writeback
+
+Cuando existe integración híbrida:
+
+Microsoft Entra escribe la nueva contraseña nuevamente hacia Active Directory local.
+
+Esto mantiene sincronizados ambos entornos.
+
+Beneficios:
+
+* Una sola contraseña.
+* Sincronización inmediata.
+* Compatible con aplicaciones locales.
+
+---
+
+# Microsoft Entra Multi-Factor Authentication (MFA)
+
+MFA requiere **dos o más factores** de autenticación.
+
+## Factores posibles
+
+### Algo que sabes
+
+* Contraseña.
+
+### Algo que tienes
+
+* Celular.
+* Token.
+* Llave FIDO2.
+
+### Algo que eres
+
+* Huella.
+* Reconocimiento facial.
+* Iris.
+
+Mientras más factores se utilizan, menor es la posibilidad de compromiso de la cuenta.
+
+---
+
+# Conditional Access + MFA
+
+La mejor práctica es exigir MFA mediante **Conditional Access**.
+
+Las políticas pueden aplicarse según:
+
+* Usuarios.
+* Grupos.
+* Aplicaciones.
+* Ubicación.
+* Riesgo.
+* Dispositivo.
+
+## Laboratorio básico
+
+Crear política:
+
+Protection → Conditional Access → New Policy
+
+Nombre:
+
+Piloto MFA
+
+Asignar:
+
+Grupo MFA-Test-Group
+
+Cloud Apps:
+
+Azure Service Management API
+
+Grant:
+
+Require Multi-Factor Authentication
+
+Enable:
+
+On
+
+Al iniciar sesión:
+
+* Aplicaciones comunes → sin MFA.
+* Aplicación protegida → solicita MFA.
+
+---
+
+# Configuración de MFA
+
+Desde:
+
+Microsoft Entra ID
+
+→ Security
+
+→ Multi-Factor Authentication
+
+Se pueden configurar:
+
+* Bloqueo de cuentas.
+* Bloqueo manual de usuarios.
+* Alertas de fraude.
+* Actividad sospechosa.
+* Notificaciones por correo.
+* Tokens OATH.
+* Configuración telefónica.
+
+---
+
+# Bloqueo de cuentas
+
+Configurable:
+
+* Intentos fallidos permitidos.
+* Tiempo para desbloqueo automático.
+* Reinicio del contador.
+
+---
+
+# Bloquear usuarios
+
+Si un dispositivo fue robado:
+
+Security
+
+→ MFA
+
+→ Block Users
+
+El usuario no podrá autenticarse mediante MFA hasta ser desbloqueado.
+
+---
+
+# Reportar actividad sospechosa
+
+Si un usuario recibe una solicitud MFA que no inició:
+
+Puede reportarla desde Microsoft Authenticator.
+
+Consecuencias:
+
+* Usuario marcado como **High Risk**.
+* Identity Protection genera alertas.
+* Puede activarse una política basada en riesgo.
+
+Los eventos aparecen en:
+
+* Sign-in Logs.
+* Audit Logs.
+* Identity Protection.
+
+---
+
+# Tokens OATH
+
+Microsoft Entra soporta tokens físicos OATH TOTP.
+
+Formato CSV:
+
+* UPN.
+* Número de serie.
+* Clave secreta.
+* Intervalo.
+* Fabricante.
+* Modelo.
+
+El administrador:
+
+1. Importa el CSV.
+2. Activa el token.
+3. Valida OTP.
+
+Cada usuario puede tener hasta cinco tokens OATH o aplicaciones Authenticator.
+
+---
+
+# Kerberos
+
+Kerberos es el protocolo de autenticación predeterminado en entornos **Active Directory**.
+
+Implementa Kerberos v5 y utiliza el **Key Distribution Center (KDC)** integrado en los controladores de dominio, usando Active Directory como base de datos de seguridad.
+
+## Ventajas
+
+### Autenticación delegada
+
+Permite que un servicio actúe en nombre del usuario para acceder a otros recursos (delegación).
+
+### Single Sign-On (SSO)
+
+Tras iniciar sesión una vez, el usuario accede a múltiples recursos sin volver a autenticarse.
+
+### Interoperabilidad
+
+Basado en estándares IETF, permitiendo interoperar con otros sistemas Kerberos.
+
+### Mayor eficiencia
+
+Usa tickets reutilizables, evitando consultar constantemente al controlador de dominio.
+
+### Autenticación mutua
+
+Cliente y servidor verifican mutuamente su identidad, reduciendo ataques de suplantación.
+
+---
+
+# NTLM (NT LAN Manager)
+
+NTLM es un protocolo de autenticación más antiguo basado en un mecanismo de **desafío-respuesta (Challenge/Response)**.
+
+Cada vez que un usuario necesita acceder a un recurso, el servidor debe validar la identidad consultando:
+
+* El controlador de dominio (cuentas de dominio), o
+* La base de cuentas local (cuentas locales).
+
+## Uso actual
+
+Aunque Kerberos es el protocolo recomendado para Active Directory, NTLM sigue utilizándose en:
+
+* Equipos en grupos de trabajo (Workgroup).
+* Inicio de sesión local.
+* Aplicaciones heredadas que no soportan Kerberos.
+
+## Administración
+
+No se configura desde Server Manager.
+
+Se administra mediante:
+
+* Políticas de seguridad.
+* Directivas de Grupo (GPO).
+
+Microsoft recomienda auditar y reducir progresivamente el uso de NTLM.
+
+---
+
+# Comparación Kerberos vs NTLM
+
+| Característica            | Kerberos | NTLM              |
+| ------------------------- | -------- | ----------------- |
+| Protocolo moderno         | Sí       | No                |
+| Basado en tickets         | Sí       | No                |
+| Challenge/Response        | No       | Sí                |
+| Single Sign-On            | Sí       | Limitado          |
+| Autenticación mutua       | Sí       | No                |
+| Delegación                | Sí       | No                |
+| Requiere Active Directory | Sí       | No necesariamente |
+| Rendimiento               | Mejor    | Menor             |
+
+---
+
+# Autenticación sin contraseña (Passwordless)
+
+Elimina el uso de contraseñas y las reemplaza por una combinación de:
+
+* Algo que tienes.
+* Algo que eres (biometría) o sabes (PIN).
+
+## Beneficios
+
+* Reduce ataques de phishing.
+* Elimina la gestión de contraseñas.
+* Mejora la experiencia del usuario.
+* Compatible con SSO y Acceso Condicional.
+
+## Métodos soportados por Microsoft Entra
+
+### Windows Hello for Business
+
+Ideal para equipos Windows personales.
+
+Características:
+
+* Usa biometría o PIN.
+* Clave privada protegida por TPM.
+* Compatible con SSO.
+* Obtiene un Primary Refresh Token (PRT) tras autenticarse.
+
+Flujo simplificado:
+
+1. Usuario inicia sesión con biometría/PIN.
+2. Se desbloquea la clave privada.
+3. Microsoft Entra envía un nonce.
+4. El dispositivo firma el nonce.
+5. Microsoft Entra valida la firma.
+6. Devuelve un PRT para acceso a recursos.
+
+### Microsoft Authenticator (Passwordless)
+
+El teléfono móvil se convierte en la credencial principal.
+
+Flujo:
+
+1. Usuario ingresa su nombre de usuario.
+2. Microsoft Entra envía una notificación push.
+3. El usuario aprueba con biometría o PIN.
+4. La aplicación firma el desafío (nonce).
+5. Microsoft Entra valida la firma y entrega el token.
+
+Ventajas:
+
+* Compatible con iOS y Android.
+* No requiere contraseña.
+* Funciona desde cualquier dispositivo.
+
+### Claves de seguridad FIDO2 (Passkeys)
+
+Basadas en el estándar abierto **FIDO2/WebAuthn**, resistente al phishing.
+
+Características:
+
+* Dispositivos USB, NFC o Bluetooth.
+* No utilizan contraseñas.
+* Protegen la clave privada en hardware seguro.
+* Compatibles con Microsoft Entra y Windows.
+
+Flujo:
+
+1. El usuario conecta la llave FIDO2.
+2. Windows la detecta.
+3. Microsoft Entra envía un nonce.
+4. El usuario desbloquea la llave con PIN o biometría.
+5. La llave firma el nonce.
+6. Microsoft Entra valida la firma y entrega el PRT.
+
+Escenarios ideales:
+
+* Equipos compartidos.
+* Administradores.
+* Organizaciones con altos requisitos de seguridad.
+* Usuarios sin teléfono móvil.
+
+### Autenticación basada en certificados (CBA)
+
+Permite autenticarse directamente con certificados **X.509** emitidos por una infraestructura PKI.
+
+Ventajas:
+
+* Resistente al phishing.
+* No requiere AD FS.
+* Compatible con Acceso Condicional y MFA.
+* Gratuita en Microsoft Entra ID.
+* Permite definir reglas según emisor, OID o atributos del certificado.
+
+Escenarios compatibles:
+
+* Aplicaciones web.
+* Aplicaciones móviles de Office.
+* Outlook, OneDrive y demás aplicaciones nativas.
+* Navegadores móviles.
+
+---
+
+# Comparación de métodos Passwordless
+
+| Método                     | Requisitos              | Factor principal             | Escenario recomendado                            |
+| -------------------------- | ----------------------- | ---------------------------- | ------------------------------------------------ |
+| Windows Hello for Business | Windows 10/11 + TPM     | Biometría o PIN              | PC corporativa dedicada                          |
+| Microsoft Authenticator    | iOS o Android           | Biometría o PIN del teléfono | Trabajo desde cualquier dispositivo              |
+| Claves FIDO2               | Llave USB/NFC/Bluetooth | PIN o biometría en la llave  | Equipos compartidos o alta seguridad             |
+| CBA (Certificados X.509)   | PKI y certificados      | Certificado digital          | Organizaciones con PKI y requisitos regulatorios |
+
+## Recomendaciones según el perfil
+
+| Usuario                              | Escenario              | Método recomendado                 |
+| ------------------------------------ | ---------------------- | ---------------------------------- |
+| Administrador                        | PC Windows dedicada    | Windows Hello for Business o FIDO2 |
+| Administrador                        | Dispositivo no Windows | Microsoft Authenticator            |
+| Trabajador de oficina                | PC Windows             | Windows Hello for Business o FIDO2 |
+| Trabajador móvil                     | Cualquier dispositivo  | Microsoft Authenticator            |
+| Primera línea / Kioscos / Hospitales | Equipos compartidos    | Claves de seguridad FIDO2          |
 
