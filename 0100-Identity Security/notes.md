@@ -21,3 +21,5 @@
 * "Logon options" es el setting de la Intranet Zone que controla el comportamiento de autenticación automática (integrated Windows authentication), necesario para que SSO funcione sin prompts al agregar los endpoints de Azure AD (login.microsoftonline.com, etc.) a la zona.
 
 * Azure AD Password Protection permite definir listas de contraseñas prohibidas personalizadas (custom banned password list) para bloquear variaciones de términos específicos, como el nombre de la organización
+
+* Dentro de las cross-tenant access settings, el redemption order de B2B collaboration admite como identity providers a Microsoft Entra ID, Microsoft accounts y social identity providers como Google, por lo que las tres opciones son válidas.
