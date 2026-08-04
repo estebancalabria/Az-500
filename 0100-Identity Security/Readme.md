@@ -2631,3 +2631,605 @@ Escenarios compatibles:
 | Trabajador móvil                     | Cualquier dispositivo  | Microsoft Authenticator            |
 | Primera línea / Kioscos / Hospitales | Equipos compartidos    | Claves de seguridad FIDO2          |
 
+---
+
+# Autenticación Kerberos
+
+## ¿Qué es?
+
+Kerberos es el protocolo de autenticación predeterminado en entornos **Active Directory Domain Services (AD DS)**. Implementa **Kerberos V5** junto con extensiones de Microsoft para autenticación con claves públicas, delegación y transporte de datos de autorización.
+
+### Componentes principales
+
+* **Cliente Kerberos (SSP)**: integrado con Winlogon y SSPI para proporcionar inicio de sesión único (SSO).
+* **KDC (Key Distribution Center)**: se ejecuta en el controlador de dominio y utiliza Active Directory como base de datos de identidades.
+* **Active Directory**: almacena cuentas, claves y permisos utilizados durante la autenticación.
+
+---
+
+## Ventajas de Kerberos
+
+### Autenticación delegada
+
+Permite que un servicio actúe en nombre del usuario para acceder a recursos de otros servidores.
+
+**Ejemplo:**
+
+* Usuario → IIS
+* IIS → SQL Server usando la identidad del usuario
+
+Esto es posible mediante **Delegation**, algo que NTLM no soporta adecuadamente.
+
+---
+
+### Inicio de sesión único (SSO)
+
+Después del primer inicio de sesión:
+
+* El usuario obtiene un Ticket Granting Ticket (TGT).
+* Puede acceder a múltiples recursos sin volver a introducir credenciales.
+
+---
+
+### Interoperabilidad
+
+Kerberos sigue los estándares del **IETF**, permitiendo interoperar con sistemas Linux, UNIX y otros productos compatibles con Kerberos.
+
+---
+
+### Mejor rendimiento
+
+Con NTLM:
+
+Cliente → Servidor → Controlador de Dominio (cada autenticación)
+
+Con Kerberos:
+
+Cliente obtiene Ticket → reutiliza el ticket durante la sesión.
+
+Reduce tráfico hacia los controladores de dominio.
+
+---
+
+### Autenticación mutua
+
+No solo el servidor verifica al cliente.
+
+También el cliente verifica que realmente está hablando con el servidor correcto.
+
+Protege frente a ataques de suplantación (spoofing).
+
+---
+
+## Flujo simplificado de Kerberos
+
+1. Usuario inicia sesión.
+2. El KDC entrega un **TGT**.
+3. El usuario solicita un ticket para un servicio.
+4. El KDC entrega un **Service Ticket**.
+5. El usuario presenta el ticket al servidor.
+6. El servidor valida el ticket y concede acceso.
+
+---
+
+## Comparación Kerberos vs NTLM
+
+| Característica                         | Kerberos | NTLM         |
+| -------------------------------------- | -------- | ------------ |
+| Active Directory                       | Sí       | Sí           |
+| Inicio de sesión único (SSO)           | ✔        | ✘            |
+| Autenticación mutua                    | ✔        | ✘            |
+| Delegación                             | ✔        | Muy limitada |
+| Tickets reutilizables                  | ✔        | ✘            |
+| Requiere contactar al DC continuamente | No       | Sí           |
+| Rendimiento                            | Mejor    | Menor        |
+
+---
+
+# NTLM (NT LAN Manager)
+
+## ¿Qué es?
+
+Familia de protocolos de autenticación basada en desafío-respuesta (Challenge/Response).
+
+Versiones:
+
+* LAN Manager
+* NTLMv1
+* NTLMv2 (recomendado)
+
+---
+
+## Funcionamiento
+
+Cada vez que un usuario necesita un nuevo token:
+
+Si es cuenta de dominio:
+
+Servidor → Controlador de Dominio
+
+Si es cuenta local:
+
+Servidor → Base SAM local
+
+---
+
+## Cuándo se usa actualmente
+
+Aunque Kerberos es el protocolo recomendado, NTLM sigue utilizándose en:
+
+* Equipos Workgroup
+* Inicio de sesión local
+* Equipos fuera del dominio
+* Aplicaciones heredadas
+* Sistemas antiguos que no soportan Kerberos
+
+---
+
+## Administración
+
+No se configura desde Server Manager.
+
+Se administra mediante:
+
+* Group Policy
+* Security Policy
+
+Microsoft recomienda:
+
+* Auditar el uso de NTLM
+* Restringirlo progresivamente
+* Migrar aplicaciones a Kerberos
+
+---
+
+# Autenticación sin contraseña (Passwordless)
+
+## Objetivo
+
+Eliminar el uso de contraseñas para reducir ataques como:
+
+* Phishing
+* Password Spraying
+* Fuerza bruta
+* Robo de credenciales
+
+La autenticación combina:
+
+* Algo que tienes
+* Algo que eres o sabes
+
+---
+
+## Métodos disponibles en Microsoft Entra ID
+
+### Windows Hello for Business
+
+Ideal para equipos Windows personales.
+
+Autenticación mediante:
+
+* PIN
+* Huella
+* Reconocimiento facial
+
+Características:
+
+* Claves protegidas por TPM.
+* SSO integrado.
+* Compatible con recursos locales y nube.
+
+### Flujo simplificado
+
+1. Usuario desbloquea la clave privada con PIN o biometría.
+2. Microsoft Entra envía un nonce.
+3. El dispositivo firma el nonce.
+4. Microsoft Entra valida la firma.
+5. Devuelve un Primary Refresh Token (PRT).
+6. El usuario obtiene acceso con SSO.
+
+---
+
+### Microsoft Authenticator
+
+Convierte un teléfono Android o iPhone en una credencial sin contraseña.
+
+Proceso:
+
+1. Usuario escribe su nombre.
+2. Microsoft Entra envía una notificación push.
+3. Usuario aprueba.
+4. Se verifica con PIN o biometría.
+5. La aplicación firma el nonce.
+6. Microsoft Entra devuelve el token.
+
+---
+
+### Claves FIDO2
+
+Dispositivos físicos:
+
+* USB
+* NFC
+* Bluetooth
+
+Características:
+
+* Sin contraseña.
+* Resistentes al phishing.
+* Compatibles con WebAuthn.
+* Funcionan en Windows y navegadores compatibles.
+
+Flujo:
+
+1. Insertar llave.
+2. Windows detecta la llave.
+3. Microsoft Entra envía nonce.
+4. Usuario valida con PIN o biometría.
+5. La llave firma el nonce.
+6. Microsoft Entra entrega el PRT.
+
+---
+
+### Autenticación basada en certificados (CBA)
+
+Permite autenticarse mediante certificados **X.509** emitidos por una PKI.
+
+Ventajas:
+
+* Sin contraseñas.
+* Resistente al phishing.
+* Compatible con Acceso Condicional.
+* No requiere AD FS.
+
+Escenarios:
+
+* Navegadores.
+* Outlook.
+* OneDrive.
+* Aplicaciones Office.
+* Dispositivos móviles.
+
+---
+
+## Comparación de métodos Passwordless
+
+| Método                  | Requisitos               | Ideal para                             |
+| ----------------------- | ------------------------ | -------------------------------------- |
+| Windows Hello           | PC Windows con TPM       | Equipos dedicados                      |
+| Microsoft Authenticator | Smartphone               | Usuarios móviles                       |
+| FIDO2                   | Llave física             | Equipos compartidos y alta seguridad   |
+| Certificados (CBA)      | PKI y certificados X.509 | Organizaciones con infraestructura PKI |
+
+---
+
+# Implementación de autenticación sin contraseña
+
+## Objetivo
+
+Eliminar las contraseñas como principal vector de ataque mediante:
+
+* Microsoft Authenticator
+* Claves de seguridad FIDO2
+* Windows Hello para empresas
+
+---
+
+## Asistente de métodos sin contraseña
+
+Disponible en el **Centro de administración de Microsoft Entra**.
+
+Permite seleccionar el método adecuado según el perfil de usuarios y generar un plan de implementación.
+
+---
+
+## Escenarios recomendados
+
+| Dispositivo                   | Método recomendado         |
+| ----------------------------- | -------------------------- |
+| Windows dedicado              | Windows Hello for Business |
+| Dispositivo no Windows        | Microsoft Authenticator    |
+| Equipos compartidos           | FIDO2                      |
+| Quioscos                      | FIDO2 o Authenticator      |
+| Tablets y móviles compartidos | Authenticator              |
+
+---
+
+## Roles necesarios
+
+| Rol                                          | Función                         |
+| -------------------------------------------- | ------------------------------- |
+| Administrador de usuarios                    | Registro combinado              |
+| Administrador de autenticación               | Administrar métodos             |
+| Administrador de directivas de autenticación | Configurar políticas            |
+| Usuario                                      | Registrar Authenticator o FIDO2 |
+
+---
+
+## Prerrequisitos
+
+### Microsoft Authenticator
+
+* Registro combinado MFA + SSPR habilitado.
+* Usuarios registrados para MFA.
+* Dispositivo registrado en Microsoft Entra.
+
+### FIDO2
+
+* Registro combinado habilitado.
+* Windows 10 1809 o superior (1903 recomendado).
+* Navegadores compatibles (Edge, Firefox 67+).
+* Claves FIDO2 certificadas.
+
+### Windows Hello
+
+Los requisitos dependen de:
+
+* Solo nube.
+* Híbrido.
+* Local.
+
+Microsoft proporciona un asistente que genera el plan de implementación.
+
+---
+
+## Planificación del proyecto
+
+Antes de implementar:
+
+* Definir responsables.
+* Involucrar a las partes interesadas.
+* Alinear expectativas.
+
+---
+
+## Plan piloto
+
+Se recomienda:
+
+* Crear grupos piloto.
+* Habilitar Passwordless solo para esos grupos.
+* Validar la experiencia antes del despliegue general.
+
+---
+
+## Comunicación a usuarios
+
+Debe incluir:
+
+* Registro combinado MFA y SSPR.
+* Descarga de Microsoft Authenticator.
+* Registro del método.
+* Cómo iniciar sesión sin contraseña.
+
+Microsoft proporciona plantillas de comunicación.
+
+---
+
+## Registro de usuarios
+
+Los usuarios registran sus métodos en:
+
+[https://aka.ms/mysecurityinfo](https://aka.ms/mysecurityinfo)
+
+Desde allí pueden registrar:
+
+* Microsoft Authenticator.
+* Claves FIDO2.
+* Otros métodos de autenticación.
+
+---
+
+## Temporary Access Pass (TAP)
+
+Código temporal emitido por un administrador para:
+
+* Registrar métodos sin contraseña por primera vez.
+* Recuperar acceso si el usuario pierde su método de autenticación.
+
+Es:
+
+* Temporal.
+* Individual.
+* Seguro.
+
+---
+
+# Implementación de Microsoft Authenticator
+
+## Consideraciones
+
+* El dispositivo debe estar registrado en Microsoft Entra.
+* No admite dispositivos compartidos.
+* Solo una cuenta profesional por dispositivo para inicio de sesión telefónico.
+
+---
+
+## Integración con AD FS
+
+Cuando el usuario utiliza Passwordless:
+
+* Normalmente no pasa por AD FS.
+* Se autentica directamente en Microsoft Entra.
+* Algunas aplicaciones heredadas siguen utilizando AD FS.
+
+---
+
+## Casos de prueba
+
+Verificar que:
+
+* El usuario registra Authenticator.
+* Puede activar el inicio de sesión telefónico.
+* Puede iniciar sesión correctamente.
+* Puede eliminar la credencial.
+* La deshabilitación mediante políticas impide el acceso.
+
+---
+
+## Solución de problemas
+
+Problemas comunes:
+
+* Registro combinado deshabilitado.
+* Usuario fuera del grupo habilitado.
+* Política Passwordless no aplicada.
+
+---
+
+# Implementación de FIDO2
+
+## Ciclo de vida
+
+* Distribución de llaves.
+* Registro inicial.
+* Activación mediante PIN o biometría.
+* Deshabilitación.
+* Reemplazo por nuevas llaves.
+
+---
+
+## Requisitos
+
+Para Windows:
+
+* Windows 10 1809 o superior.
+* Edge o Firefox compatibles.
+
+Para dispositivos híbridos:
+
+* Windows 10 2004+.
+* Windows Server 2016 o 2019.
+* Microsoft Entra Connect actualizado.
+
+---
+
+## Habilitación
+
+Puede realizarse mediante:
+
+* Microsoft Intune (recomendado).
+* Paquetes de aprovisionamiento.
+* Directivas de Grupo (solo híbrido).
+
+---
+
+## Restricción de fabricantes
+
+Es posible permitir únicamente llaves FIDO2 de fabricantes aprobados utilizando el **AAGUID (Authenticator Attestation GUID)**.
+
+---
+
+## Casos de prueba
+
+Comprobar:
+
+* Registro de la llave.
+* Restablecimiento.
+* Inicio de sesión en Windows.
+* Inicio de sesión en aplicaciones web.
+* Funcionamiento tras cambios en las políticas.
+
+---
+
+## Problemas comunes
+
+* Registro combinado deshabilitado.
+* Claves FIDO2 no habilitadas.
+* Windows demasiado antiguo.
+* Navegador no compatible.
+* Proveedor de credenciales no habilitado.
+
+---
+
+# Implementación de la Protección con contraseña de Microsoft Entra
+
+## Objetivo
+
+Bloquear:
+
+* Contraseñas débiles.
+* Contraseñas comunes.
+* Variantes de contraseñas conocidas.
+* Palabras personalizadas definidas por la organización.
+
+La misma política se aplica tanto en Microsoft Entra ID como en Active Directory local.
+
+---
+
+## Principios de diseño
+
+* Los controladores de dominio **no necesitan acceso directo a Internet**.
+* No se abren nuevos puertos de red en los DC.
+* No requiere cambios en el esquema de AD DS.
+* Compatible con cualquier nivel funcional admitido.
+* Las contraseñas nunca salen del controlador de dominio en texto plano.
+* No depende de Password Hash Synchronization (PHS).
+* Permite implementación incremental, aunque solo aplica en los DC con el agente instalado.
+
+---
+
+## Implementación incremental
+
+Es posible instalar el agente solo en algunos controladores de dominio para pruebas.
+
+**Importante:** esto **no es seguro para producción**, ya que solo los DC con el agente validarán las contraseñas. Microsoft recomienda instalar el agente en **todos** los controladores de dominio del dominio.
+
+---
+
+## Componentes de la solución
+
+### Servicio Proxy de Protección con contraseña
+
+* Se instala en un equipo unido al dominio.
+* Descarga las políticas desde Microsoft Entra.
+* Las reenvía a los controladores de dominio.
+* No almacena políticas (es stateless).
+
+### Agente del Controlador de Dominio (DC Agent)
+
+* Recibe solicitudes de validación desde el filtro de contraseñas.
+* Descarga y almacena localmente la política.
+* Valida cada cambio o restablecimiento de contraseña.
+
+### DLL del filtro de contraseñas
+
+* Intercepta los cambios de contraseña del sistema operativo.
+* Envía la contraseña al servicio DC Agent para validación.
+* Devuelve **Aprobada** o **Rechazada**.
+
+---
+
+## Flujo de funcionamiento
+
+1. El servicio Proxy se registra mediante objetos **serviceConnectionPoint** en Active Directory.
+2. El DC Agent localiza un Proxy disponible.
+3. Solicita la política de contraseñas a Microsoft Entra a través del Proxy.
+4. El Proxy descarga la política y la devuelve al DC Agent.
+5. El DC Agent almacena la política en **SYSVOL**.
+6. Otros DC la reciben mediante la replicación de SYSVOL.
+7. El DC Agent comprueba cada hora si existe una política más reciente.
+8. Ante un cambio de contraseña, el DC utiliza la política almacenada localmente para aceptar o rechazar la nueva contraseña.
+
+---
+
+## Características importantes
+
+* Cada política es específica del **tenant** de Microsoft Entra.
+* El Proxy se comunica con el DC Agent mediante **RPC sobre TCP**.
+* El DC Agent nunca escucha conexiones de red.
+* El Proxy no almacena políticas.
+* Si un DC no dispone de ninguna política descargada, **acepta automáticamente la contraseña** y registra un evento de advertencia.
+* La sincronización de cambios de política **no es inmediata**; puede existir un retraso hasta que todos los DC reciban la actualización.
+* La Protección con contraseña **complementa** las políticas de contraseña existentes y otros filtros de terceros; todos deben aprobar una contraseña para que sea aceptada.
+
+---
+
+## Registro del bosque (Forest Registration)
+
+Para utilizar Protección con contraseña:
+
+* El bosque de AD DS debe registrarse en un único tenant de Microsoft Entra.
+* Todos los servicios Proxy del bosque deben registrarse en **ese mismo tenant**.
+
+**No se admite** registrar un mismo bosque o sus proxies en distintos tenants de Microsoft Entra, ya que impediría la descarga de las políticas de contraseña.
