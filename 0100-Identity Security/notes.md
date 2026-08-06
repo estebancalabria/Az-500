@@ -23,3 +23,5 @@
 * Azure AD Password Protection permite definir listas de contraseñas prohibidas personalizadas (custom banned password list) para bloquear variaciones de términos específicos, como el nombre de la organización
 
 * Dentro de las cross-tenant access settings, el redemption order de B2B collaboration admite como identity providers a Microsoft Entra ID, Microsoft accounts y social identity providers como Google, por lo que las tres opciones son válidas.
+
+* Hay que asignarle el rol AcrPull al service principal generado automáticamente por AKS para que pueda autenticarse contra el ACR.
