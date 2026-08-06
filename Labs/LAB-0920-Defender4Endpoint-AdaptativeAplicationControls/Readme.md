@@ -54,6 +54,9 @@ https://portal.azure.com
 2. Seleccionar **Workload protections**  
 3. Abrir **Adaptive application controls**
 
+<img width="470" height="289" alt="image" src="https://github.com/user-attachments/assets/36974b8e-b58d-4619-88ef-63bbdccd4f49" />
+
+
 ## 4.2 Crear la política
 1. Defender agrupa automáticamente las VMs según comportamiento → seleccionar el grupo donde aparece **VM-LAB-AAC**  
 2. Hacer clic en **Create policy**  
