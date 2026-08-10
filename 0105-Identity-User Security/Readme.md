@@ -364,3 +364,58 @@ Características:
 - Acceso transparente entre organizaciones.
 - Los usuarios no cambian de tenant para colaborar.
 - Basado en relaciones de confianza entre organizaciones. :contentReference[oaicite:14]{index=14}
+
+# Administración de acceso para invitados
+
+Microsoft recomienda utilizar **Microsoft Entra Entitlement Management** para automatizar:
+
+- Solicitudes de acceso.
+- Aprobaciones.
+- Asignación a grupos.
+- Asignación a aplicaciones.
+- Revisiones periódicas.
+- Expiración automática del acceso.
+
+Esto simplifica la gobernanza de identidades externas y reduce el riesgo asociado a cuentas de invitados olvidadas. 
+
+---
+
+# Microsoft Graph para External ID
+
+Microsoft Graph permite automatizar la administración de identidades externas mediante API.
+
+Entre las capacidades disponibles se incluyen:
+
+- Envío de invitaciones.
+- Creación de experiencias personalizadas de incorporación.
+- Configuración de políticas entre tenants.
+- Administración de colaboración B2B.
+- Automatización de flujos de acceso. :contentReference[oaicite:16]{index=16}
+
+---
+
+# Acceso Condicional para usuarios externos
+
+Las políticas de **Conditional Access** también pueden aplicarse a usuarios B2B.
+
+Es posible:
+
+- Requerir MFA.
+- Exigir dispositivos compatibles.
+- Confiar en la autenticación realizada por el tenant de origen.
+- Reutilizar notificaciones de cumplimiento entre organizaciones.
+
+Esto mejora la experiencia del usuario sin reducir el nivel de seguridad. :contentReference[oaicite:17]{index=17}
+
+---
+
+# Organizaciones multiinquilino
+
+Las organizaciones con múltiples tenants pueden utilizar **Cross-Tenant Synchronization** para sincronizar usuarios entre tenants sin necesidad de invitaciones individuales.
+
+Beneficios:
+
+- Mejor experiencia de usuario.
+- Menor administración manual.
+- Colaboración transparente entre tenants.
+- Sincronización automática de identidades. :contentReference[oaicite:18]{index=18}
