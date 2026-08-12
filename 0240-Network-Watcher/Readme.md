@@ -1,6 +1,4 @@
-# Configuración del firewall en recursos de Azure
-
-## Uso de controles de red sólidos
+# Uso de controles de red sólidos
 
 Puede conectar las máquinas virtuales y los dispositivos de Azure a otros dispositivos en red, colocándolos en redes virtuales de Azure. Esto permite conectar tarjetas de interfaz de red virtual a una red virtual para posibilitar las comunicaciones basadas en TCP/IP entre dispositivos habilitados para la red.
 
